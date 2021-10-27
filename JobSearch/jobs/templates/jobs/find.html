@@ -3,15 +3,14 @@
 
 {% block body %}
 
-<div class="background">
-    <div class="searchbar">
-      <form id="form" class="d-flex">
-        <input type="text" class="form-control me-2" placeholder="Job Title, Keyword, Company...">
-        <input type="text" class="form-control me-2" placeholder="Desired Location...">
-        <input id="search_button" class="btn btn-outline-success" type="submit" value="Search">
-      </form>
-    </div>
+<div class="searchbar">
+  <form id="form" class="d-flex" action="{% url 'jobs:find' %}" method="get">
+      <input class="form-control me-2" type="text" placeholder="Job Title, Keyword, Company..." name="j" value="{{ request.GET.j }}">
+      <input class="form-control me-2" type="text" placeholder="Desired Location..." name="l" value="{{ request.GET.l }}">
+      <input class="btn btn-outline-success" type="submit" value="Search">
+  </form>
 </div>
+
 
 <div class="cards">
     {% for job in jobs %}
@@ -19,10 +18,12 @@
       <div class="card-body">
         <h5 class="card-title">{{ job.jobtitle }}</h5>
         <p class="card-text">{{ job.location }}</p>
-        <a href="#" class="btn btn-primary">View more</a>
+        <a href="{% url 'jobs:job' job.id %}" class="btn btn-primary">View more</a>
       </div>
     </div>
-
+    {% empty %} 
+        <li>No search results</li>
     {% endfor %}
+</div>
 
 {% endblock %}
