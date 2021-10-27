@@ -18,8 +18,7 @@ def find(request):
     if "j" in request.GET.keys():
         j = request.GET["j"]
         l = request.GET["l"]
-        jobs = Job.objects.filter(jobtitle__contains = j)
-        jobs = Job.objects.filter(location__contains = l)
+        jobs = Job.objects.filter(jobtitle__icontains = j, location__icontains = l)
     return render(request, 'jobs/find.html', {
         "jobs": jobs
     })
