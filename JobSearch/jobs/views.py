@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django import forms
 from jobs.models import Job
-from django.http import HttpResponse, Http404
-from django.forms.models import model_to_dict
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.urls import reverse
 
 class NewJobPost(forms.Form):
     jobtitle = forms.CharField(label = "Job Title: ")
@@ -10,59 +10,18 @@ class NewJobPost(forms.Form):
     description = forms.CharField(label = "Job Description: ", widget = forms.Textarea())
     about = forms.CharField(label = "About the company: ", widget = forms.Textarea())
 
-class JobSearch(forms.Form):
-    JobTitle = forms.CharField(
-        label = "",
-        required = False,
-        widget = forms.TextInput(attrs={
-            'class': 'form-control me-2',
-            'id': 'jobtitle',
-            'placeholder': 'Job Title, Keyword, Company...'
-        }))
-    Location = forms.CharField(
-        label = "",
-        required = False,
-        widget = forms.TextInput(attrs={
-            'class': 'form-control me-2',
-            'id': 'location',
-            'placeholder': 'Desired Location...'
-        }))
-
 def index(request):
     return render(request, 'jobs/index.html')
 
 def find(request):
-    if request.method == "POST":
-        form = JobSearch(request.POST)
-        if form.is_valid():
-            jobtitle = form.cleaned_data["JobTitle"]
-            location = form.cleaned_data["Location"]
-
-            if jobtitle != "":
-                if location != "":
-                    return render(request, 'jobs/find.html', {
-                        "form": JobSearch(),
-                        "jobs": Job.objects.filter(jobtitle = jobtitle, location = location),
-                    })
-                return render(request, 'jobs/find.html', {
-                    "form": JobSearch(),
-                    "jobs": Job.objects.filter(jobtitle = jobtitle),
-                })
-            elif location != "":
-                return render(request, 'jobs/find.html', {
-                    "form": JobSearch(),
-                    "jobs": Job.objects.filter(location = location),
-                })
-
-    jobs = []
-    for job in Job.objects.all():
-        jobs.append(model_to_dict(job))
-    print(jobs)
-    
+    jobs = Job.objects.all()[:10]
+    if "j" in request.GET.keys():
+        j = request.GET["j"]
+        l = request.GET["l"]
+        jobs = Job.objects.filter(jobtitle__contains = j)
+        jobs = Job.objects.filter(location__contains = l)
     return render(request, 'jobs/find.html', {
-        "form": JobSearch(),
-        "jobs": Job.objects.all(),
-        "mydata": {"jobs": jobs}
+        "jobs": jobs
     })
 
 def post(request):
@@ -80,5 +39,11 @@ def post(request):
                 "form": form
     })
     return render(request, 'jobs/post.html', {
-        "form": NewJobPost()
+        "form": NewJobPost
+    })
+
+def job(request, job_id):
+    job = Job.objects.get(pk = job_id)
+    return render(request, 'jobs/job.html', {
+        'job': job
     })
