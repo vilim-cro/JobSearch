@@ -7,7 +7,7 @@ def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
 
-    return render(request, 'users/profile.html')
+    return render(request, 'jobs/index.html')
 
 def login_view(request):
     if request.method == "POST":
@@ -16,7 +16,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse('index'))
+            return HttpResponseRedirect(reverse('users:index'))
         else:
             return render(request, 'users/login.html', {
                 "message": "Invalid credentials."
@@ -31,3 +31,6 @@ def logout_view(request):
     return render(request, 'users/login.html', {
         "message": "You have been logged out."
     })
+
+def profile(request):
+    return render(request, 'users/profile.html')
