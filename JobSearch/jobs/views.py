@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django import forms
+from django.urls.base import reverse
 from jobs.models import Job
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.urls import reverse
+from django.contrib import messages
 
 class NewJobPost(forms.Form):
     jobtitle = forms.CharField(label = "Job Title: ")
@@ -24,6 +25,10 @@ def find(request):
     })
 
 def post(request):
+    if not request.user.is_authenticated:
+        messages.add_message(request, messages.INFO, 'To post a job offer you need to login/register first.')
+        return HttpResponseRedirect(reverse('users:login'))
+
     if request.method == "POST":
         form = NewJobPost(request.POST)
         if form.is_valid():
