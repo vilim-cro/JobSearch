@@ -6,10 +6,10 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib import messages
 
 class NewJobPost(forms.Form):
-    jobtitle = forms.CharField(label = "Job Title: ")
-    location = forms.CharField(label = "Location: ")
-    description = forms.CharField(label = "Job Description: ", widget = forms.Textarea())
-    about = forms.CharField(label = "About the company: ", widget = forms.Textarea())
+    jobtitle = forms.CharField(label = "Job Title: ", widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    location = forms.CharField(label = "Location: ", widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    description = forms.CharField(label = "Job Description: ", widget = forms.Textarea(attrs={'class' : 'form-control users_form-control'}))
+    about = forms.CharField(label = "About the company: ", widget = forms.Textarea(attrs={'class' : 'form-control users_form-control'}))
 
 def index(request):
     return render(request, 'jobs/index.html')

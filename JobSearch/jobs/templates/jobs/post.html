@@ -3,18 +3,22 @@
 
 {% block body %}
 
-<div class="post_form_div">
-    <form action="{% url 'jobs:post' %}" method="POST">
-        {% csrf_token %}
-        {% for field in form %}
-        <div>
-            <label for="">{{ field.label }}</label><br>
-            {{ field }}
-            <br><br>
-        </div>
-        {% endfor %}
-        <input type="submit" value="Submit">
-    </form>
+<div class="user_form card" id="post_form">
+    <div class="card-body">
+          <h5 class="card-title users_card-title">Post a job</h5>
+            <form action="{% url 'users:register' %}" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+            </div>
+            {% endfor %}
+            <div class="center_btn">
+                <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
+            </form>
+    </div>
 </div>
 
 {% endblock %}

@@ -3,26 +3,30 @@
 {% block body %}
 
 <div class="user_form">
+    <div class="card w-75">
+        <div class="card-body users_card-body">
+          <h5 class="card-title users_card-title">Register</h5>
+            <form action="{% url 'users:register' %}" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+            </div>
+            {% endfor %}
+            <div class="center_btn">
+                <input class="btn btn-primary users_btn" type="submit" value="Submit">
+            </div>
+            </form>
+        </div>
+    </div>
     {% if messages %}
-    <div>
+    <div class="message">
         {% for message in messages %}
             {{ message }}
         {% endfor %}
     </div>
     {% endif %}
-    <br>
-    <form action="{% url 'users:register' %}" method="POST">
-        {% csrf_token %}
-        {% for field in form %}
-        <div>
-            <label>{{ field.label }}</label>
-            <br>
-            {{ field }}
-            <br><br>
-        </div>
-        {% endfor %}
-        <input type="submit" value="Submit">
-    </form>
 </div>
 
 {% endblock %}

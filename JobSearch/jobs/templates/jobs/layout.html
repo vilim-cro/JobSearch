@@ -27,8 +27,8 @@
             </ul>
           </div>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
               {% if request.user.is_authenticated %}
+              <li class="nav-item">
                 <div class="dropdown">
                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Welcome, {{ request.user.username }}
@@ -38,12 +38,14 @@
                     <a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
                   </div>
                 </div>
+              </li>
               {% else %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'users:login' %}" style="color: rgb(45, 107, 170);">Sign in</a>
               </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{% url 'users:register' %}" style="color: rgb(45, 107, 170);">Sign up</a>
-              <li class="nav-item"></li>
+              </li>
               {% endif %}
             </li>
         </ul>

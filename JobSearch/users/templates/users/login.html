@@ -2,19 +2,31 @@
 
 {% block body %}
 
-<form action="{% url 'users:login' %}" method="POST">
-    {% csrf_token %}
-    <input type="text" placeholder="Username" name="username">
-    <input type="password" placeholder="Password" name="password">
-    <input type="submit" value="Login">
-</form><br>
-
-{% if messages %}
-    <div>
+<div class="user_form">
+    <div class="card w-75">
+        <div class="card-body users_card-body">
+          <h5 class="card-title users_card-title">Log in</h5>
+          <form action="{% url 'users:login' %}" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label">Username:</label>
+              <input type="text" class="form-control users_form-control" name="username">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password:</label>
+              <input type="password" class="form-control users_form-control" name="password">
+            </div>
+            <input class="btn btn-primary users_btn" id="login_btn" type="submit" value="Log in">
+          </form>
+        </div>
+    </div>
+    {% if messages %}
+    <div class="message">
         {% for message in messages %}
             {{ message }}
         {% endfor %}
     </div>
-{% endif %}
+    {% endif %}
+</div>
 
 {% endblock %}

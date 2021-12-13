@@ -9,9 +9,9 @@ from django.contrib import messages
 
 
 class NewUser(forms.Form):
-    username = forms.CharField(max_length=16, label="Username: ", help_text="Up to 16 characters")
-    email = forms.EmailField(max_length=64, label="Email: ", required = False)
-    password = forms.CharField(max_length=16, label="Password: ", widget=PasswordInput)
+    username = forms.CharField(max_length=16, label="Username: ", help_text="Up to 16 characters", widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    email = forms.EmailField(max_length=64, label="Email: ", required = False, widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    password = forms.CharField(max_length=16, label="Password: ", widget=PasswordInput(attrs={'class' : 'form-control'}))
     #cv = forms.FileField(label="Your CV: ", required=False)
 
 
