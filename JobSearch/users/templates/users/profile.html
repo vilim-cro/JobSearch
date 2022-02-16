@@ -2,8 +2,31 @@
 
 {% block body %}
 
-<h1>
-    Hi {{ request.user.username }}!
-</h1>
+<div class="profile_info">
+    <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <td>Username: </td>
+            <td>{{ user.username }}</td>
+          </tr>
+          <tr>
+            <td>First name: </td>
+            <td>{{ user.first_name }}</td>
+          </tr>
+          <tr>
+            <td>Last name: </td>
+            <td>{{ user.last_name }}</td>
+          </tr>
+          <tr>
+            <td>Email: </td>
+            <td>{{ user.email }}</td>
+          </tr>
+          <tr>
+            <td>Number of job posts: </td>
+            <td>{{ user.username }}</td>
+          </tr>
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}

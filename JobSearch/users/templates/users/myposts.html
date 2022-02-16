@@ -1,0 +1,23 @@
+{% extends 'jobs/layout.html' %}
+{% load static %}
+
+{% block body %}
+
+<div class="cards">
+    {% for post in posts %}
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ post.jobtitle }}</h5>
+        <p class="card-text">{{ post.location }}</p>
+        <span style="display: flex; justify-content: space-between;">
+            <button class="btn btn-primary">View more</button>
+            <button type="button" class="btn btn-danger">Delete</button>
+        </span>
+      </div>
+    </div>
+    {% empty %} 
+        <li>You have not uploaded any job posts yet.</li>
+    {% endfor %}
+</div>
+
+{% endblock %}

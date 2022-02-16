@@ -10,18 +10,19 @@ from django.contrib import messages
 
 class NewUser(forms.Form):
     username = forms.CharField(max_length=16, label="Username: ", help_text="Up to 16 characters", widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    first_name = forms.CharField(max_length=16, label="First Name: ", help_text="Up to 16 characters", widget=forms.TextInput(attrs={'class' : 'form-control'}))
+    last_name = forms.CharField(max_length=16, label="Last Name: ", help_text="Up to 16 characters", widget=forms.TextInput(attrs={'class' : 'form-control'}))
     email = forms.EmailField(max_length=64, label="Email: ", required = False, widget=forms.TextInput(attrs={'class' : 'form-control'}))
     password = forms.CharField(max_length=16, label="Password: ", widget=PasswordInput(attrs={'class' : 'form-control'}))
-    #cv = forms.FileField(label="Your CV: ", required=False)
-
-
 
 def index(request):
     if not request.user.is_authenticated:
         messages.add_message(request, messages.INFO, 'You need to login first.')
         return HttpResponseRedirect(reverse('users:login'))
 
-    return render(request, 'users/profile.html')
+    return render(request, 'users/profile.html', {
+        "user": request.user
+    })
 
 def login_view(request):
     if request.method == "POST":
@@ -40,9 +41,11 @@ def register(request):
         form = NewUser(request.POST)
         if form.is_valid():
             user = User.objects.create_user(
-                form.cleaned_data["username"],
-                form.cleaned_data["email"],
-                form.cleaned_data["password"])
+                username = form.cleaned_data["username"],
+                first_name = form.cleaned_data["first_name"],
+                last_name = form.cleaned_data["last_name"],
+                email = form.cleaned_data["email"],
+                password = form.cleaned_data["password"])
             user.save()
             messages.add_message(request, messages.SUCCESS, 'User created! Now go to the login page and login.')
         else:
@@ -50,6 +53,11 @@ def register(request):
 
     return render(request, 'users/register.html', {
         "form": NewUser
+    })
+
+def myposts(request):
+    return render(request, 'users/myposts.html', {
+        "posts": request.user.job_posts.all()
     })
 
 def logout_view(request):

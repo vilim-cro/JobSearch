@@ -29,3 +29,12 @@
 .message {
     text-align: center;
 }
+.profile_info {
+    margin-top: 50px;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+.delete {
+    float: right;
+}
+
