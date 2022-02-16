@@ -6,7 +6,7 @@
 <div class="user_form card" id="post_form">
     <div class="card-body">
           <h5 class="card-title users_card-title">Post a job</h5>
-            <form action="{% url 'users:register' %}" method="POST">
+            <form action="{% url 'jobs:post' %}" method="POST">
             {% csrf_token %}
             {% for field in form %}
             <div class="mb-3">

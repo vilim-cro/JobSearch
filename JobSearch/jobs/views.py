@@ -1,9 +1,12 @@
+import time
 from django.shortcuts import render
 from django import forms
 from django.urls.base import reverse
 from jobs.models import Job
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib import messages
+from django.http import JsonResponse
+from django.core import serializers
 
 class NewJobPost(forms.Form):
     jobtitle = forms.CharField(label = "Job Title: ", widget=forms.TextInput(attrs={'class' : 'form-control'}))
@@ -15,14 +18,26 @@ def index(request):
     return render(request, 'jobs/index.html')
 
 def find(request):
-    jobs = Job.objects.all()[:10]
+    return render(request, 'jobs/find.html')
+
+def load(request):
     if "j" in request.GET.keys():
         j = request.GET["j"]
         l = request.GET["l"]
         jobs = Job.objects.filter(jobtitle__icontains = j, location__icontains = l)
-    return render(request, 'jobs/find.html', {
-        "jobs": jobs
-    })
+    else:
+        jobs = Job.objects.all()
+
+    start = int(request.GET.get("start") or 0)
+    end = int (request.GET.get("end") or start + 9)
+
+    qs = jobs[start - 1:end]
+    qs_json = serializers.serialize('json', qs)
+
+    if start != 1:
+        time.sleep(1)
+
+    return HttpResponse(qs_json, content_type = 'application/json')
 
 def post(request):
     if not request.user.is_authenticated:
@@ -35,7 +50,8 @@ def post(request):
             job = Job(jobtitle = form.cleaned_data["jobtitle"], 
                     location = form.cleaned_data["location"],
                     description = form.cleaned_data["description"],
-                    about = form.cleaned_data["about"]
+                    about = form.cleaned_data["about"],
+                    creator = request.user
                     )
             job.save()
         else:
