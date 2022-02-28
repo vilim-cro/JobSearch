@@ -21,7 +21,8 @@ def index(request):
         return HttpResponseRedirect(reverse('users:login'))
 
     return render(request, 'users/profile.html', {
-        "user": request.user
+        "user": request.user,
+        "number_of_posts": len(request.user.job_posts.all())
     })
 
 def login_view(request):
@@ -57,7 +58,7 @@ def register(request):
 
 def myposts(request):
     return render(request, 'users/myposts.html', {
-        "posts": request.user.job_posts.all()
+        "posts": request.user.job_posts.all(),
     })
 
 def logout_view(request):
