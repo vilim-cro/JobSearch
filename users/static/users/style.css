@@ -1,7 +1,7 @@
 .user_form {
-    width: 25%;
-    margin-left: 37.5%;
-    margin-top: 40px;
+    margin: 40px auto;
+    width: fit-content;
+    text-align: center;
 }
 .users_form-control {
     resize: none;

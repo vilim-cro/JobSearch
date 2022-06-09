@@ -3,9 +3,10 @@
 
 {% block body %}
 
-<div class="user_form card" id="post_form">
-    <div class="card-body">
-          <h5 class="card-title users_card-title">Post a job</h5>
+<div class="user_form" style="min-width:60%">
+    <div class="card w-75">
+        <div class="card-body users_card-body">
+            <h5 class="card-title users_card-title">Post a job</h5>
             <form action="{% url 'jobs:post' %}" method="POST">
             {% csrf_token %}
             {% for field in form %}
@@ -18,7 +19,8 @@
                 <input class="btn btn-primary" type="submit" value="Submit">
             </div>
             </form>
-    </div>
+        </div>
+    </div>    
 </div>
 
 {% endblock %}

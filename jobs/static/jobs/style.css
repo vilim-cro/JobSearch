@@ -10,8 +10,13 @@ nav{
     background-color: rgb(87, 104, 116);
     color: white !important;
 }
+#right-nav {
+    display:flex;
+    justify-content: right;
+}
 #brand {
     font-size: 30px;
+    margin: 0;
 }
 .title {
     text-align: center;
@@ -21,6 +26,9 @@ nav{
 .background {
     background-image: url("images/jobs_image.jpg");
     background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     height: 100%;
     margin-bottom: 20px;
 }
@@ -43,7 +51,8 @@ nav{
     background-color: rgb(247, 235, 235);
 }
 .cards {
-    margin: 0 50px;
+    margin: 0 auto;
+    width: fit-content;
     text-align: center;
 }
 .card-body {
@@ -57,8 +66,4 @@ nav{
 }
 .nav-link {
     color: darkblue;
-}
-.post_form_div {
-    margin-top: 40px;
-    text-align: center;
 }
