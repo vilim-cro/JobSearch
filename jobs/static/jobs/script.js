@@ -80,10 +80,13 @@ function add_jobs(job) {
     const card_button_danger = document.createElement('button');
     card_button_danger.className = "btn btn-danger";
     card_button_danger.innerHTML = "Delete";
-    
-    card_button_danger.onclick = function() {
-  
+    card_button_danger.dataset.toggle = "modal";
+    card_button_danger.dataset.target = "#exampleModalCenter";
+    card_button_danger.onclick = () => {
+      document.querySelector('#delete-modal').innerHTML = `Are you sure you want to delete "${job.fields.jobtitle}" job post?`;
+      document.querySelector('#delete-button').href = `/users/${job.pk}`;
     }
+  
     card_span.append(card_button_danger);
   }
 

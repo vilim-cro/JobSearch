@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib import messages
+from jobs.models import Job
 
 
 class NewUser(forms.Form):
@@ -57,12 +58,22 @@ def register(request):
     })
 
 def myposts(request):
-    return render(request, 'users/myposts.html', {
-        "posts": request.user.job_posts.all(),
-    })
+    if request.user.is_authenticated: 
+        return render(request, 'users/myposts.html', {
+            "posts": request.user.job_posts.all(),
+        })
+    return HttpResponseRedirect(reverse('users:login'))
 
 def logout_view(request):
     logout(request)
     messages.add_message(request, messages.INFO, 'You have been logged out.')
     return render(request, 'users/login.html')
+
+def delete(request, job_id):
+    if request.user.is_authenticated and request.user == Job.objects.get(pk=job_id).creator:
+        model = Job.objects.get(pk=job_id)
+        model.delete()
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('users:myposts'))
+    return HttpResponseRedirect(reverse('users:login'))
     
