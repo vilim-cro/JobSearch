@@ -53,17 +53,43 @@ function add_jobs(job) {
   card_text.innerHTML = job.fields.location;
   card_body.append(card_text);
 
+  const card_span = document.createElement('span');
+  card_span.style.display = "flex";
+  card_span.style.justifyContent = "space-between";
+
   const card_button = document.createElement('button');
   card_button.className = "btn btn-primary";
   card_button.innerHTML = "View more";
-  card_button.onclick = load_page;
-  card_body.append(card_button);
+  card_button.dataset.toggle = "modal";
+  card_button.dataset.target = "#exampleModal";
+  card_button.onclick = function() {
 
+    let modalTitle = document.querySelector('.modal-title');
+    modalTitle.innerHTML = job.fields.jobtitle + " - " + job.fields.location;
+    let des = document.querySelector('#des');
+    des.innerHTML = job.fields.description;
+    let about = document.querySelector('#about');
+    about.innerHTML = job.fields.about;
+  }
+  
+  card_span.append(card_button);
+  
+
+  let list = window.location.href.split('/');
+  if (list[list.length - 1] == "myposts") {
+    const card_button_danger = document.createElement('button');
+    card_button_danger.className = "btn btn-danger";
+    card_button_danger.innerHTML = "Delete";
+    
+    card_button_danger.onclick = function() {
+  
+    }
+    card_span.append(card_button_danger);
+  }
+
+  card_body.append(card_span);
   card.append(card_body);
 
   document.querySelector('.cards').append(card);
 }
 
-function load_page() {
-  //fetch(`{this.id}`)
-}

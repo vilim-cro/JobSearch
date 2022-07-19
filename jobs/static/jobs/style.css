@@ -67,3 +67,8 @@ nav{
 .nav-link {
     color: darkblue;
 }
+#job-card {
+    margin: 40px auto;
+    width: fit-content;
+    text-align: center;
+}

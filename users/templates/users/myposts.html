@@ -3,21 +3,28 @@
 
 {% block body %}
 
+<script src="{% static 'jobs/script.js' %}"></script>
+
 <div class="cards" style="margin-top: 30px;">
-    {% for post in posts %}
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">{{ post.jobtitle }}</h5>
-        <p class="card-text">{{ post.location }}</p>
-        <span style="display: flex; justify-content: space-between;">
-            <button class="btn btn-primary">View more</button>
-            <button type="button" class="btn btn-danger">Delete</button>
-        </span>
+  
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+      </div>
+      <div class="modal-body">
+        <p id="des"></p>
+        <p id="about"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
-    {% empty %} 
-        <h3>You have not uploaded any job posts yet.</h3>
-    {% endfor %}
+  </div>
 </div>
 
 {% endblock %}
