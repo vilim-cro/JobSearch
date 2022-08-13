@@ -14,6 +14,7 @@ function load() {
     const start = counter;
     const end = start + quantity - 1;
     counter = end + 1;
+    console.log("loaded false");
 
     pars = {};
     window.location.search.substr(1).split('&').forEach(data => {
@@ -24,6 +25,7 @@ function load() {
     let list = window.location.href.split('/');
     if (list[list.length - 1] == "myposts" && !loaded) {
       loaded = true;
+      console.log("loaded true");
       fetch(`/users/myjobs`)
       .then(response => response.json())
       .then(data => {
