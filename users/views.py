@@ -1,5 +1,6 @@
 from django.forms.widgets import PasswordInput
 from django.shortcuts import render
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -7,7 +8,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib import messages
 from jobs.models import Job
-
+from django.core import serializers
 
 class NewUser(forms.Form):
     username = forms.CharField(max_length=16, label="Username: ", help_text="Up to 16 characters", widget=forms.TextInput(attrs={'class' : 'form-control'}))
@@ -58,10 +59,8 @@ def register(request):
     })
 
 def myposts(request):
-    if request.user.is_authenticated: 
-        return render(request, 'users/myposts.html', {
-            "posts": request.user.job_posts.all(),
-        })
+    if request.user.is_authenticated:
+        return render(request, 'users/myposts.html')
     return HttpResponseRedirect(reverse('users:login'))
 
 def logout_view(request):
@@ -76,4 +75,7 @@ def delete(request, job_id):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('users:myposts'))
     return HttpResponseRedirect(reverse('users:login'))
+
+def myjobs(request):
+    return HttpResponse(serializers.serialize('json', request.user.job_posts.all()), content_type = 'application/json')
     

@@ -16,11 +16,20 @@ function load() {
 
     pars = {};
     window.location.search.substr(1).split('&').forEach(data => {
-      lista = data.split('=');
+      let lista = data.split('=');
       pars[lista[0]] = lista[1];
     })
 
-    if (pars['j'] != undefined) {
+    let list = window.location.href.split('/');
+    if (list[list.length - 1] == "myposts") {
+      fetch(`/users/myjobs`)
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(add_jobs);
+    });
+    }
+
+    else if (pars['j'] != undefined) {
       fetch(`/jobs/load?start=${start}&end=${end}&j=${pars['j']}&l=${pars['l']}`)
       .then(response => response.json())
       .then(data => {
