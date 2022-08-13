@@ -1,3 +1,4 @@
+// Calculates how many job posts will be rendered
 let counter = 1;
 const quantity = 10;
 let loaded = false;
@@ -10,6 +11,7 @@ window.onscroll = () => {
     }
 }
 
+// Renders job posts
 function load() {
     const start = counter;
     const end = start + quantity - 1;
@@ -18,21 +20,27 @@ function load() {
     pars = {};
     window.location.search.substr(1).split('&').forEach(data => {
       let lista = data.split('=');
-      pars[lista[0]] = lista[1];
+      pars[lista[0]] = lista[1];    // Stores j and l search parameters
     })
 
     let list = window.location.href.split('/');
-    if (list[list.length - 1] == "myposts") {
+    if (list[list.length - 1] == "myposts") {     // Checks if the page is 'myposts'
       if (!loaded) {
         loaded = true;
-        fetch(`/users/myjobs`)
+        fetch(`/users/myjobs`)              // Only renders job posts of authenticated user
         .then(response => response.json())
         .then(data => {
+          if (data.length == 0) {
+            let h3 = document.createElement('h3');
+            h3.innerHTML = "You have no job posts yet."
+            document.querySelector('.message').append(h3);
+          }
           data.forEach(add_jobs);
       });
       }
     }
 
+    // Renders searched job posts on find page, infinite scroll
     else {
       if (pars['j'] != undefined) {
         fetch(`/jobs/load?start=${start}&end=${end}&j=${pars['j']}&l=${pars['l']}`)
@@ -51,6 +59,7 @@ function load() {
   }
 }
 
+// Takes the job as JSON and creates div job card
 function add_jobs(job) {
   const card = document.createElement('div');
   card.className = 'card';
@@ -77,7 +86,8 @@ function add_jobs(job) {
   card_button.innerHTML = "View more";
   card_button.dataset.toggle = "modal";
   card_button.dataset.target = "#exampleModal";
-  card_button.onclick = function() {
+
+  card_button.onclick = function() {    // Js for modal from bootstrap
 
     let modalTitle = document.querySelector('.modal-title');
     modalTitle.innerHTML = job.fields.jobtitle + " - " + job.fields.location;
@@ -90,7 +100,7 @@ function add_jobs(job) {
   card_span.append(card_button);
   
 
-  let list = window.location.href.split('/');
+  let list = window.location.href.split('/');     // If the page is 'myposts', adds delete button and new modal
   if (list[list.length - 1] == "myposts") {
     const card_button_danger = document.createElement('button');
     card_button_danger.className = "btn btn-danger";

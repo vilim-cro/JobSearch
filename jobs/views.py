@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.core import serializers
 
+# Form for posting new job posts
 class NewJobPost(forms.Form):
     jobtitle = forms.CharField(label = "Job Title: ", widget=forms.TextInput(attrs={'class' : 'form-control'}))
     location = forms.CharField(label = "Location: ", widget=forms.TextInput(attrs={'class' : 'form-control'}))
@@ -21,6 +22,7 @@ def index(request):
 def find(request):
     return render(request, 'jobs/find.html')
 
+# Used for loading searched job posts on 'find' page, infinite scroll
 def load(request):
     if "j" in request.GET.keys():
         j = request.GET["j"]
@@ -45,6 +47,7 @@ def post(request):
         messages.add_message(request, messages.INFO, 'To post a job offer you need to login/register first.')
         return HttpResponseRedirect(reverse('users:login'))
 
+    # If form is valid, save new job post
     if request.method == "POST":
         form = NewJobPost(request.POST)
         if form.is_valid():
@@ -61,10 +64,4 @@ def post(request):
     })
     return render(request, 'jobs/post.html', {
         "form": NewJobPost
-    })
-
-def job(request, job_id):
-    job = Job.objects.get(pk = job_id)
-    return render(request, 'jobs/job.html', {
-        'job': job
     })

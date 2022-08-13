@@ -17,6 +17,7 @@ class NewUser(forms.Form):
     email = forms.EmailField(max_length=64, label="Email: ", required = False, widget=forms.TextInput(attrs={'class' : 'form-control'}))
     password = forms.CharField(max_length=16, label="Password: ", widget=PasswordInput(attrs={'class' : 'form-control'}))
 
+# Returns the template with some user information
 def index(request):
     if not request.user.is_authenticated:
         messages.add_message(request, messages.INFO, 'You need to login first.')
@@ -27,6 +28,7 @@ def index(request):
         "number_of_posts": len(request.user.job_posts.all())
     })
 
+# If the user is authenticated, redirects to 'users/index.html', if not message is showed
 def login_view(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -68,6 +70,7 @@ def logout_view(request):
     messages.add_message(request, messages.INFO, 'You have been logged out.')
     return render(request, 'users/login.html')
 
+# Deletes the job post if the authenticated user is also the job post creator
 def delete(request, job_id):
     if request.user.is_authenticated and request.user == Job.objects.get(pk=job_id).creator:
         model = Job.objects.get(pk=job_id)
@@ -76,6 +79,7 @@ def delete(request, job_id):
         return HttpResponseRedirect(reverse('users:myposts'))
     return HttpResponseRedirect(reverse('users:login'))
 
+# Returns JSON job posts that were created by authenticated user
 def myjobs(request):
     return HttpResponse(serializers.serialize('json', request.user.job_posts.all()), content_type = 'application/json')
     
