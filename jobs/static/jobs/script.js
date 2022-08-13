@@ -22,13 +22,16 @@ function load() {
     })
 
     let list = window.location.href.split('/');
-    if (list[list.length - 1] == "myposts" && !loaded) {
-      loaded = true;
-      fetch(`/users/myjobs`)
-      .then(response => response.json())
-      .then(data => {
-        data.forEach(add_jobs);
-    });
+    if (list[list.length - 1] == "myposts") {
+      if (!loaded) {
+        loaded = true;
+        console.log("loaded true");
+        fetch(`/users/myjobs`)
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(add_jobs);
+      });
+      }
     }
 
     else {
