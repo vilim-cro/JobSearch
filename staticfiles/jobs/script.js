@@ -25,7 +25,6 @@ function load() {
     if (list[list.length - 1] == "myposts") {
       if (!loaded) {
         loaded = true;
-        console.log("loaded true");
         fetch(`/users/myjobs`)
         .then(response => response.json())
         .then(data => {
